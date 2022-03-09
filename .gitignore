@@ -1,0 +1,14 @@
+*.o
+*.csv
+norm
+**/*.bak
+**/bak.*
+*.tar.gz
+*.log
+**/*.db
+**/*.json
+**/*.info
+**/*.txt
+
+# Tags
+**/tags
