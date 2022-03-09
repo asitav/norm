@@ -128,15 +128,8 @@ int main()
   MPI_Comm_rank(comm, &rank);
   MPI_Comm_size(comm, &size);
 
-  if (size > omp_get_num_devices()) {
-    if (rank==0)
-      printf("*** Error: mpi size=%d > total gpus=%d ***\n",size, omp_get_num_devices());
-    return EXIT_FAILURE;
-  }
-
-  // Set host input/output arrays
-  // Define local mpi-rank arrays: all ranks have same sized (h_N) local arrays
-  int h_N = 10;
+  // Define local mpi-rank arrays of same size (h_N)
+  int h_N = 1000;
   double h_U[h_N];
   init_data(h_U, h_N, comm);
 
@@ -148,7 +141,7 @@ int main()
   double norm_omp = NormOMP(h_U, h_N, comm);
   double norm_omt = NormOMT(h_U, h_N, comm);
 
-  if (rank==0)
+  if (!rank)
       printf(" norm_mpi = %0.16f\n norm_omp = %0.16f\n norm_omt = %0.16f\n",norm_mpi, norm_omp, norm_omt);
 
   MPI_Finalize();
@@ -164,6 +157,4 @@ int main()
       printf("Failure!\n");
     return EXIT_FAILURE;
   }
-
-  //return EXIT_SUCCESS;
 }
